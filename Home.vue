@@ -1,43 +1,25 @@
 <template>
   <BaseView>
-      <Floating />
+      <!-- <Amap v-if="!isWeiXinBrowser" @amap_onComplete="amap_onComplete"/> -->
+      <Floating isNearBorder @tap="floatingTap">
+        <div class="floatingView"></div>
+      </Floating>
       <Scroll
         ref="scroll"
         class="scroll-home"
-        :scrollbar="scrollbar"
         :probeType="3"
-        :pullDownRefresh="pullDownRefresh"
         :pullUpLoad="true"
         @pullingDown="onRefresh"
-        @scroll="scroll"
         @pullingUp="onLoad"
       >
           <div class="contantView">
-            <Header></Header>
+            <Header :cars="userInfo.uservehiclesList"></Header>
             <span class="c-parkingText">停车场</span>
-            <ParkingList :items="listData" @goToMap="goToMap"></ParkingList>
+            <ParkingList :items="listData" @goToMap="goToMap" @cancelOrder="cancelOrder" @order="order"></ParkingList>
           </div>
-          <template v-slot:pulldown>
-            <Loading class="pulldown"></Loading>
-          </template>
           <template v-slot:pullup>
-            <div class="contentLoader">
-              <ContentLoader>
-                <rect x="0" y="0" rx="3" ry="3" width="250" height="10" />
-                <rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
-                <rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
-                <rect x="0" y="60" rx="3" ry="3" width="250" height="10" />
-                <rect x="20" y="80" rx="3" ry="3" width="200" height="10" />
-                <rect x="20" y="100" rx="3" ry="3" width="80" height="10" />
-              </ContentLoader>
-            </div>
+            <Content :name="'home'" />
           </template>
-          <van-actionsheet
-            v-model="show"
-            :actions="actions"
-            cancel-text="取消"
-            @select="onSelect"
-          />
       </Scroll>
   </BaseView>
 </template>
