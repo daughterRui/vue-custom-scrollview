@@ -34,7 +34,7 @@ import { getRect } from './dom';
 import Loading from './Loading.vue';
 
 export default {
-  name: 'vue-scroll',
+  name: 'vue-custom-scrollview',
   props: {
     probeType: {
       type: Number,

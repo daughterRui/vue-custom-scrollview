@@ -2,7 +2,7 @@
   <div id="app">
     <main class="position-box">
       <div class="test">TopTest</div>
-      <vue-scroll
+      <vue-custom-scrollview
         ref="scroll"
         class="scroll-home"
         :probeType="3"
@@ -20,7 +20,7 @@
           <!-- <template v-slot:pulldown="slotProps">
             <span>{{slotProps}}</span>
           </template> -->
-      </vue-scroll>
+      </vue-custom-scrollview>
     </main>
   </div>
 </template>
