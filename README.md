@@ -12,7 +12,7 @@ npm i vue-custom-scrollview -S
 
 ### Use in SPA
 
-examples目录里面有demo用法，请自行下载查看
+[examples](https://github.com/daughterRui/vue-custom-scrollview/blob/master/examples/App.vue)目录里面有demo用法，请自行下载查看
 
 ### Attributes
 
