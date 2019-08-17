@@ -1,6 +1,6 @@
 {
   "name": "vue-custom-scrollview",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "xiaotianyi <13006378969@163.com>",
   "license": "MIT",
   "description": "基于 Vue better-scroll的移动端滚动组件,支持自定义上下拉样式",
