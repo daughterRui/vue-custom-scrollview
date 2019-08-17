@@ -10,6 +10,8 @@ npm i vue-custom-scrollview -S
 
 [demo](https://daughterrui.github.io/xiaotianyi.github.io/#/vue-custom-scrollview)
 
+![demo](https://gt-toolbox.oss-cn-beijing.aliyuncs.com/gt-toolbox/b461949b-ab1e-44e5-a48b-218e22575236.gif)
+
 ### Use in SPA
 
 [examples](https://github.com/daughterRui/vue-custom-scrollview/blob/master/examples/App.vue)目录里面有demo用法，请自行下载查看
