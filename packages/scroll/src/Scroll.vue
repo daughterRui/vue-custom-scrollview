@@ -3,7 +3,7 @@
  * @Author: xty
  * @LastEditors: Please set LastEditors
  * @Date: 2019-05-10 22:27:35
- * @LastEditTime: 2019-08-06 10:56:50
+ * @LastEditTime: 2019-07-15 22:17:45
  -->
 
 <template>
@@ -12,7 +12,7 @@
       <div ref="listWrapper">
         <slot>
         </slot>
-        <slot v-if="pullUpDirty" name="pullup">
+        <slot name="pullup" :finishPullUp="pullUpDirty">
         </slot>
       </div>
       <div class="pulldown">
@@ -29,87 +29,90 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll'
-import { getRect } from '../utils/dom'
-import Loading from './Loading'
+import BScroll from 'better-scroll';
+import { getRect } from './dom';
+import Loading from './Loading.vue';
+
 export default {
+  name: 'vue-scroll',
   props: {
     probeType: {
       type: Number,
-      default: 1
+      default: 1,
     },
     eventPassthrough: {
       type: String,
-      default: ''
+      default: '',
     },
     click: {
       type: Boolean,
-      default: true
+      default: true,
     },
     scrollX: {
       type: Boolean,
-      default: false
+      default: false,
     },
     scrollY: {
       type: Boolean,
-      default: true
+      default: true,
     },
     scrollbar: {
       type: [Object, Boolean],
-      default: false
+      default: false,
     },
     listenScroll: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 下拉刷新默认添加，不需要传false
     pullDownRefresh: {
       type: [Object, Boolean],
-      default () {
+      default() {
         return {
           threshold: 60,
-          stop: 50
-        }
-      }
+          stop: 50,
+        };
+      },
     },
     // 上拉加载
     pullUpLoad: {
       type: [Object, Boolean],
-      default: false
+      default: false,
     },
     refreshDelay: {
       type: Number,
-      default: 20
-    }
+      default: 20,
+    },
   },
   components: {
-    Loading
+    Loading,
   },
-  data () {
+  data() {
     return {
+      scroll: null,
       isPullingDown: false, // 是否执行下拉的状态
       // movingDirectionY: 0, // 下拉是否已拿到数据
       isPullingUp: false, // 上拉状态
       pullUpDirty: true, // 此变量用来检查是否加载到了最后一页(默认为未加载到最后一页)
       isPullingDownStatus: false, // 下拉刷新是否该执行的状态
-      isTouchEndStatus: true
-    }
+      isTouchEndStatus: true,
+    };
   },
   watch: {
 
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-      this._initScroll()
-    })
+      this._initScroll();
+    });
   },
   methods: {
-    _initScroll () {
+    _initScroll() {
       if (!this.$refs.wrapper) {
-        return
+        return;
       }
       if (this.$refs.listWrapper) {
-        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
+        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`;
       }
       // better-scroll的初始化
       this.scroll = new BScroll(this.$refs.wrapper, {
@@ -121,128 +124,128 @@ export default {
         eventPassthrough: this.eventPassthrough, // 嵌套滑动是否互斥
         pullDownRefresh: this.pullDownRefresh, // 是否开启下拉刷新
         pullUpLoad: this.pullUpLoad, // 是否开启上拉加载
-        useTransition: false // 是否启动css动画,false启动js动画
-      })
+        useTransition: false, // 是否启动css动画,false启动js动画
+      });
       // 是否派发滚动事件
       if (this.listenScroll) {
         this.scroll.on('scroll', (pos) => {
           if (pos.y > 60) {
-            this.isPullingDownStatus = true
+            this.isPullingDownStatus = true;
           } else {
-            this.isPullingDownStatus = false
+            this.isPullingDownStatus = false;
           }
-          this.$emit('scroll', pos)
-        })
+          this.$emit('scroll', pos);
+        });
       }
       // 是否派发滚动到底部事件，用于上拉加载
       if (this.pullUpLoad) {
-        const _this = this
+        const _this = this;
         _this.scroll.on('pullingUp', () => {
           if (_this.pullUpDirty) {
-            _this.isPullingUp = true
-            _this.$emit('pullingUp')
+            _this.isPullingUp = true;
+            _this.$emit('pullingUp');
           }
-        })
+        });
       }
       // 是否派发顶部下拉事件，用于下拉刷新
       if (this.pullDownRefresh) {
         this.scroll.on('pullingDown', () => {
-          this.isPullingDown = true
-          this.$emit('pullingDown')
-        })
+          this.isPullingDown = true;
+          this.$emit('pullingDown');
+        });
         // 监听手指离开的事件
         this.scroll.on('touchEnd', (pos) => {
           if (pos.y > 60) {
-            this.isTouchEndStatus = true
+            this.isTouchEndStatus = true;
           } else {
-            this.isTouchEndStatus = false
+            this.isTouchEndStatus = false;
           }
-        })
+        });
         // 监听手指触摸前的事件
         this.scroll.on('beforeScrollStart', () => {
-          this.isTouchEndStatus = false
-        })
+          this.isTouchEndStatus = false;
+        });
       }
     },
     // 代理better-scroll的enable方法
-    enable () {
-      this.scroll && this.scroll.enable()
+    enable() {
+      this.scroll && this.scroll.enable();
     },
     // 代理better-scroll的disable方法
-    disable () {
-      this.scroll && this.scroll.disable()
+    disable() {
+      this.scroll && this.scroll.disable();
     },
     // 代理better-scroll的destroy方法
-    destroy () {
-      this.scroll && this.scroll.destroy()
+    destroy() {
+      this.scroll && this.scroll.destroy();
     },
     // 代理better-scroll的autoPullDownRefresh方法
-    autoPullDownRefresh () {
-      this.scroll && this.scroll.autoPullDownRefresh()
+    autoPullDownRefresh() {
+      this.scroll && this.scroll.autoPullDownRefresh();
     },
     // 代理better-scroll的closePullUp方法
-    closePullUp () {
-      this.scroll && this.scroll.closePullUp()
+    closePullUp() {
+      this.scroll && this.scroll.closePullUp();
     },
     // 代理better-scroll的openPullUp方法
-    openPullUp () {
-      this.scroll && this.scroll.openPullUp()
+    openPullUp() {
+      this.scroll && this.scroll.openPullUp();
     },
     // 代理better-scroll的refresh方法
-    refresh () {
-      this.scroll && this.scroll.refresh()
+    refresh() {
+      this.scroll && this.scroll.refresh();
     },
     // 代理better-scroll的scrollTo方法
-    scrollTo () {
-      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+    scrollTo() {
+      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments);
     },
     // 代理better-scroll的scrollToElement方法
-    scrollToElement () {
-      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+    scrollToElement() {
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
     },
-    forceUpdate (dirty) {
+    forceUpdate(dirty) {
       this.$nextTick(() => {
-        this.pullUpDirty = dirty
+        this.pullUpDirty = dirty;
         if (this.pullDownRefresh) {
           this._reboundPullDown().then(() => {
-            this._afterPullDown()
-          })
+            this._afterPullDown();
+          });
         } else if (this.pullUpLoad) {
-          this.scroll.finishPullUp()
-          this.refresh()
+          this.scroll.finishPullUp();
+          this.refresh();
         } else {
-          this.refresh()
+          this.refresh();
         }
-      })
+      });
     },
-    _reboundPullDown () {
-      const { stopTime = 600 } = this.pullDownRefresh
-      return new Promise(resolve => {
+    _reboundPullDown() {
+      const { stopTime = 600 } = this.pullDownRefresh;
+      return new Promise((resolve) => {
         this.reboundPullDownTimer = setTimeout(() => {
-          this.isPullingDown = false
-          this.scroll.finishPullUp()
-          this.scroll.finishPullDown()
-          resolve()
-        }, stopTime)
-      })
+          this.isPullingDown = false;
+          this.scroll.finishPullUp();
+          this.scroll.finishPullDown();
+          resolve();
+        }, stopTime);
+      });
     },
-    _afterPullDown () {
+    _afterPullDown() {
       this.afterPullDownTimer = setTimeout(() => {
-        this.refresh()
-      }, this.scroll.options.bounceTime)
-    }
+        this.refresh();
+      }, this.scroll.options.bounceTime);
+    },
   },
-  destroyed () {
-    this.scroll && this.scroll.destroy()
-    this.reboundPullDownTimer && clearTimeout(this.reboundPullDownTimer)
-    this.reboundPullDownTimer = null
-    this.afterPullDownTimer && clearTimeout(this.afterPullDownTimer)
-    this.afterPullDownTimer = null
-  }
-}
+  destroyed() {
+    this.scroll && this.scroll.destroy();
+    this.reboundPullDownTimer && clearTimeout(this.reboundPullDownTimer);
+    this.reboundPullDownTimer = null;
+    this.afterPullDownTimer && clearTimeout(this.afterPullDownTimer);
+    this.afterPullDownTimer = null;
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .pulldown{
   position: absolute;
   left: 0;

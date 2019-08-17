@@ -1,0 +1,51 @@
+{
+  "name": "vue-custom-scrollview",
+  "version": "0.1.2",
+  "author": "xiaotianyi <13006378969@163.com>",
+  "license": "MIT",
+  "description": "基于 Vue better-scroll的移动端滚动组件,支持自定义上下拉样式",
+  "private": false,
+  "main": "lib/scroll.umd.min.js",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name scroll --dest lib packages/index.js"
+  },
+  "dependencies": {
+    "better-scroll": "^1.15.2",
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10",
+    "vue-custom-scrollview": "^0.1.2",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.10.0",
+    "@vue/cli-plugin-eslint": "^3.10.0",
+    "@vue/cli-service": "^3.10.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daughterRui/vue-scroll.git"
+  },
+  "keywords": [
+    "vue",
+    "better-scroll",
+    "vue-scroll",
+    "vue-better-scroll",
+    "vue-custom-scrollview",
+    "custom-scroll"
+  ],
+  "bugs": {
+    "url": "https://github.com/daughterRui/vue-scroll/issues"
+  },
+  "homepage": "https://github.com/daughterRui/vue-scroll#readme"
+}

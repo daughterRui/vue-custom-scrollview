@@ -3,11 +3,11 @@
  * @Author: 肖天翼
  * @LastEditors: Please set LastEditors
  * @Date: 2018-12-24 16:38:22
- * @LastEditTime: 2019-08-06 10:59:13
+ * @LastEditTime: 2019-05-24 14:02:38
  -->
 <template>
   <div :style="{height: height + 'px'}" class="base">
-      <slot></slot>
+      <slot name="contentView"></slot>
   </div>
 </template>
 
@@ -20,26 +20,26 @@ export default {
   components: {
   },
 
-  data () {
+  data() {
     return {
-      height: document.documentElement.clientHeight
-    }
+      height: document.documentElement.clientHeight,
+    };
   },
   watch: {
-    height (val) {
+    height(val) {
     // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
       if (!this.timer) {
         // 一旦监听到的height值改变，就将其重新赋给data里的height
-        this.height = val
-        this.timer = true
-        let that = this
-        setTimeout(function () {
+        this.height = val;
+        this.timer = true;
+        const that = this;
+        setTimeout(() => {
           // 打印height变化的值
-          console.log(that.height)
-          that.timer = false
-        }, 400)
+          console.log(that.height);
+          that.timer = false;
+        }, 400);
       }
-    }
+    },
   },
   computed: {
 
@@ -47,15 +47,15 @@ export default {
   methods: {
 
   },
-  created () {
+  created() {
 
   },
-  mounted () {
+  mounted() {
     window.onresize = () => {
-      this.height = document.documentElement.clientHeight
-    }
-  }
-}
+      this.height = document.documentElement.clientHeight;
+    };
+  },
+};
 </script>
 <style scoped lang="scss">
 .base{

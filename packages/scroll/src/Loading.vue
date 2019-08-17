@@ -1,49 +1,50 @@
 <template>
   <div class="loading">
-    <img v-if="!isTouchEndStatus && !isPullingDown" :class="[isPullingDownStatus ? imgAnimation : scrollImg]" :src="downImg">
+    <img v-if="!isTouchEndStatus && !isPullingDown" :class="[isPullingDownStatus ? imgAnimation : scrollImg]" src="https://gt-toolbox.oss-cn-beijing.aliyuncs.com/gt-toolbox/d8a3286d-ea1c-4c84-be1f-c221573f2dd9.svg">
     <div v-else>
-      <van-loading type="spinner" size="1.5rem"/>
+      <LoadingCss />
     </div>
     <span v-if="!isTouchEndStatus && !isPullingDown" class="pullDownText">{{isPullingDownStatus ? '松开立即刷新': '下拉可以刷新'}}</span>
   </div>
 </template>
 
 <script>
-import downImg from './assets/down.svg'
-import upImg from './assets/up.svg'
+import LoadingCss from './LoadingCss.vue';
+
 export default {
   name: 'loading',
   props: {
     isPullingDownStatus: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isPullingDown: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isTouchEndStatus: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+  },
+  components: {
+    LoadingCss,
   },
   watch: {
     isPullingDown: {
-      handler (val) {
+      handler(val) {
         // console.log('val', val)
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
-  data () {
+  data() {
     return {
-      downImg: downImg,
-      upImg: upImg,
       scrollImg: 'scrollImg',
-      imgAnimation: 'imgAnimation'
-    }
-  }
-}
+      imgAnimation: 'imgAnimation',
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
